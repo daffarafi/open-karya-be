@@ -18,7 +18,7 @@ export class KaryaService {
     return (await this.karyaRepository.find({ relations: ['user'] })).map(
       (karya) => {
         delete karya.user.hash;
-        return karya;
+        return { karya };
       },
     );
   }

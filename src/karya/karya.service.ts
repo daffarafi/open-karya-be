@@ -15,12 +15,14 @@ export class KaryaService {
   ) {}
 
   async getAllKarya() {
-    return (await this.karyaRepository.find({ relations: ['user'] })).map(
-      (karya) => {
-        delete karya.user.hash;
-        return { karya };
-      },
-    );
+    return {
+      karya: (await this.karyaRepository.find({ relations: ['user'] })).map(
+        (karya) => {
+          delete karya.user.hash;
+          return karya;
+        },
+      ),
+    };
   }
 
   async getKaryaById(karyaId: number) {

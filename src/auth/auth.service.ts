@@ -38,7 +38,12 @@ export class AuthService {
       instagram: dto.instagram,
     });
 
-    return this.generateToken(user.id, user.email);
+    delete user.hash;
+
+    return {
+      user,
+      access_token: this.generateToken(user.id, user.email),
+    };
   }
 
   async login(dto: LoginDto) {
@@ -54,10 +59,15 @@ export class AuthService {
       throw new ForbiddenException('Credentials invalid');
     }
 
-    return this.generateToken(user.id, user.email);
+    delete user.hash;
+
+    return {
+      user,
+      access_token: this.generateToken(user.id, user.email),
+    };
   }
 
-  async generateToken(userId: number, email: string): Promise<object> {
+  async generateToken(userId: number, email: string): Promise<string> {
     const payload = {
       sub: userId,
       email,
@@ -69,8 +79,6 @@ export class AuthService {
       secret,
     });
 
-    return {
-      access_token: token,
-    };
+    return token;
   }
 }

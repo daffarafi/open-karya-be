@@ -61,11 +61,12 @@ export class KaryaService {
       throw new ForbiddenException('Access to resources denied');
 
     await this.karyaRepository.update(karya.id, dto);
+    const updatedKarya = await this.getKaryaById(karyaId);
 
     return {
       statusCode: 200,
       message: 'Karya berhasil diupdate!',
-      karya,
+      karya: updatedKarya,
     };
   }
 

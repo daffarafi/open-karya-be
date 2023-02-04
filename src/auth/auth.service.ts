@@ -42,6 +42,7 @@ export class AuthService {
 
     return {
       statusCode: 201,
+      message: 'Signup success!',
       user,
       access_token: await this.generateToken(user.id, user.email),
     };
@@ -64,6 +65,7 @@ export class AuthService {
 
     return {
       statusCode: 200,
+      message: 'Login success!',
       user,
       access_token: await this.generateToken(user.id, user.email),
     };

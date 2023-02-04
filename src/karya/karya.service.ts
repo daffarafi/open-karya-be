@@ -15,14 +15,14 @@ export class KaryaService {
   ) {}
 
   async getAllKarya() {
+    const karya = await this.karyaRepository.find({ relations: ['user'] });
+    const removedHashKarya = karya.map((karya) => {
+      delete karya.user.hash;
+      return karya;
+    });
     return {
       statusCode: 200,
-      karya: (await this.karyaRepository.find({ relations: ['user'] })).map(
-        (karya) => {
-          delete karya.user.hash;
-          return karya;
-        },
-      ),
+      karya: removedHashKarya,
     };
   }
 

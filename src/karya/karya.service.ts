@@ -22,6 +22,7 @@ export class KaryaService {
     });
     return {
       statusCode: 200,
+      message: 'success!',
       karya: removedHashKarya,
     };
   }
@@ -37,6 +38,7 @@ export class KaryaService {
     delete karya.user.hash;
     return {
       statusCode: 200,
+      message: 'success!',
       karya,
     };
   }

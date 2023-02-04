@@ -19,6 +19,7 @@ export class UserService {
     });
     return {
       statusCode: 200,
+      message: 'success!',
       users: removedHashUsers,
     };
   }
@@ -34,6 +35,7 @@ export class UserService {
     delete user.hash;
     return {
       statusCode: 200,
+      message: 'success!',
       user,
     };
   }
@@ -52,6 +54,7 @@ export class UserService {
     });
     return {
       statusCode: 201,
+      message: 'Edit user success!',
       response,
     };
   }

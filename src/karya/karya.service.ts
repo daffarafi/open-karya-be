@@ -60,12 +60,12 @@ export class KaryaService {
     if (!karya || karya.user.id !== userId)
       throw new ForbiddenException('Access to resources denied');
 
-    const response = await this.karyaRepository.update(karya.id, dto);
+    await this.karyaRepository.update(karya.id, dto);
 
     return {
       statusCode: 200,
       message: 'Karya berhasil diupdate!',
-      response,
+      karya,
     };
   }
 

@@ -22,7 +22,7 @@ export class AuthService {
     const isExist = await this.userRepository.findOneBy({ email: dto.email });
 
     if (isExist) {
-      throw new ForbiddenException('Credentials taken');
+      return new ForbiddenException('Credentials taken');
     }
 
     const user = await this.userRepository.save({
@@ -50,13 +50,13 @@ export class AuthService {
     const user = await this.userRepository.findOneBy({ email: dto.email });
 
     if (!user) {
-      throw new ForbiddenException('Credentials invalid');
+      return new ForbiddenException('Credentials invalid');
     }
 
     const pwMatches = await argon.verify(user.hash, dto.password);
 
     if (!pwMatches) {
-      throw new ForbiddenException('Credentials invalid');
+      return new ForbiddenException('Credentials invalid');
     }
 
     delete user.hash;

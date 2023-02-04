@@ -75,12 +75,11 @@ export class KaryaService {
     if (!karya || karya.user.id !== userId)
       throw new ForbiddenException('Access to resources denied');
 
-    const response = await this.karyaRepository.delete(karyaId);
+    await this.karyaRepository.delete(karyaId);
 
     return {
       statusCode: 200,
       message: 'Karya berhasil dihapus!',
-      response,
     };
   }
 }

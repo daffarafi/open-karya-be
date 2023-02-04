@@ -12,12 +12,15 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
   async getAllUsers() {
-    return (await this.userRepository.find({ relations: ['karya'] })).map(
-      (user) => {
-        delete user.hash;
-        return user;
-      },
-    );
+    const users = await this.userRepository.find({ relations: ['karya'] });
+    const removedHashUsers = users.map((user) => {
+      delete user.hash;
+      return user;
+    });
+    return {
+      statusCode: 200,
+      users: removedHashUsers,
+    };
   }
 
   async getUserById(userId: number) {
@@ -29,11 +32,14 @@ export class UserService {
     });
 
     delete user.hash;
-    return user;
+    return {
+      statusCode: 200,
+      user,
+    };
   }
 
   async editUser(userId: number, dto: EditUserDto) {
-    return this.userRepository.update(userId, {
+    const response = await this.userRepository.update(userId, {
       email: dto.email,
       hash: await argon.hash(dto.password),
       firstName: dto.firstName,
@@ -44,5 +50,9 @@ export class UserService {
       twitter: dto.twitter,
       instagram: dto.instagram,
     });
+    return {
+      statusCode: 201,
+      response,
+    };
   }
 }

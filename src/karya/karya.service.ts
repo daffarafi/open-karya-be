@@ -16,6 +16,7 @@ export class KaryaService {
 
   async getAllKarya() {
     return {
+      statusCode: 200,
       karya: (await this.karyaRepository.find({ relations: ['user'] })).map(
         (karya) => {
           delete karya.user.hash;
@@ -34,31 +35,50 @@ export class KaryaService {
     });
 
     delete karya.user.hash;
-    return karya;
+    return {
+      statusCode: 200,
+      karya,
+    };
   }
 
   async createKarya(userId: number, dto: CreateKaryaDto) {
     const user = await this.userRepository.findOneBy({ id: userId });
     delete user.hash;
     const karya = await this.karyaRepository.save({ ...dto, user });
-    return karya;
+    return {
+      statusCode: 201,
+      message: 'Karya berhasil diunggah!',
+      karya,
+    };
   }
 
   async editKaryaById(userId: number, karyaId: number, dto: EditKaryaDto) {
-    const karya = await this.getKaryaById(karyaId);
+    const { karya } = await this.getKaryaById(karyaId);
 
     if (!karya || karya.user.id !== userId)
       throw new ForbiddenException('Access to resources denied');
 
-    return this.karyaRepository.update(karya.id, dto);
+    const response = await this.karyaRepository.update(karya.id, dto);
+
+    return {
+      statusCode: 200,
+      message: 'Karya berhasil diupdate!',
+      response,
+    };
   }
 
   async deleteKaryaById(userId: number, karyaId: number) {
-    const karya = await this.getKaryaById(karyaId);
+    const { karya } = await this.getKaryaById(karyaId);
 
     if (!karya || karya.user.id !== userId)
       throw new ForbiddenException('Access to resources denied');
 
-    return this.karyaRepository.delete(karyaId);
+    const response = await this.karyaRepository.delete(karyaId);
+
+    return {
+      statusCode: 200,
+      message: 'Karya berhasil dihapus!',
+      response,
+    };
   }
 }

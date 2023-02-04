@@ -41,6 +41,7 @@ export class AuthService {
     delete user.hash;
 
     return {
+      statusCode: 201,
       user,
       access_token: await this.generateToken(user.id, user.email),
     };
@@ -62,6 +63,7 @@ export class AuthService {
     delete user.hash;
 
     return {
+      statusCode: 200,
       user,
       access_token: await this.generateToken(user.id, user.email),
     };
